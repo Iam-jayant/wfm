@@ -16,13 +16,17 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.0",
     "@mui/material": "^5.14.0",
+    "@mui/x-charts": "^8.11.0",
     "@workforce-navigator/shared": "^1.0.0",
     "axios": "^1.4.0",
     "ethers": "^6.7.0",
+    "framer-motion": "^12.23.12",
+    "lucide-react": "^0.542.0",
     "mappls-web-maps": "^3.7.1-0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.14.0",
+    "recharts": "^3.1.2",
     "socket.io-client": "^4.7.0"
   },
   "devDependencies": {

@@ -133,7 +133,7 @@ const MapView: React.FC = () => {
 
       {/* Map */}
       <Paper elevation={2} sx={{ p: 1 }}>
-        <MapComponent height="600px" />
+        <MapComponent />
       </Paper>
 
       {/* Auto-refresh indicator */}
