@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+      - PORT=3001
+    volumes:
+      - ./packages/backend/.env:/app/packages/backend/.env
+    networks:
+      - workforce-network
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - workforce-network
+
+  # Optional: Add PostgreSQL for production-like development
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: workforce_navigator
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - workforce-network
+
+  # Optional: Add Redis for caching
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - workforce-network
+
+networks:
+  workforce-network:
+    driver: bridge
+
+volumes:
+  postgres_data:

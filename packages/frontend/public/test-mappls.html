@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MAPPLS Workforce Map - Indore</title>
+    <style>
+        #map {
+            width: 100%;
+            height: 400px;
+            border: 1px solid #ccc;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .status {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+        .info { background-color: #d1ecf1; color: #0c5460; }
+        .legend {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+        .legend-item {
+            display: inline-block;
+            margin-right: 20px;
+            margin-bottom: 5px;
+        }
+        .legend-color {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <h1>MAPPLS Workforce Map - Indore City</h1>
+    <div id="status" class="status info">Loading MAPPLS SDK...</div>
+    <div id="map"></div>
+    
+    <div class="legend">
+        <h3>Worker Status Legend:</h3>
+        <div class="legend-item">
+            <span class="legend-color" style="background-color: #4caf50;"></span>
+            Available
+        </div>
+        <div class="legend-item">
+            <span class="legend-color" style="background-color: #ff9800;"></span>
+            Busy
+        </div>
+        <div class="legend-item">
+            <span class="legend-color" style="background-color: #f44336;"></span>
+            Offline
+        </div>
+    </div>
+    
+    <script>
+        const API_KEY = '45c5537bd746c26aa12526e7335bb5c5';
+        const statusDiv = document.getElementById('status');
+        
+        // Mock worker data for Indore
+        const workers = [
+            {
+                id: '2',
+                name: 'Rajesh Kumar',
+                employeeId: 'EMP001',
+                status: 'available',
+                location: { lat: 22.7196, lng: 75.8577 }, // Rajwada
+                area: 'Rajwada'
+            },
+            {
+                id: '3',
+                name: 'Priya Sharma',
+                employeeId: 'EMP002',
+                status: 'busy',
+                location: { lat: 22.7532, lng: 75.8937 }, // Vijay Nagar
+                area: 'Vijay Nagar'
+            },
+            {
+                id: '4',
+                name: 'Amit Patel',
+                employeeId: 'EMP003',
+                status: 'available',
+                location: { lat: 22.6708, lng: 75.8718 }, // Palasia
+                area: 'Palasia'
+            },
+            {
+                id: '5',
+                name: 'Sunita Verma',
+                employeeId: 'EMP004',
+                status: 'offline',
+                location: { lat: 22.7279, lng: 75.8723 }, // Sapna Sangeeta
+                area: 'Sapna Sangeeta'
+            },
+            {
+                id: '6',
+                name: 'Vikash Singh',
+                employeeId: 'EMP005',
+                status: 'available',
+                location: { lat: 22.6893, lng: 75.8570 }, // Bhawar Kuan
+                area: 'Bhawar Kuan'
+            }
+        ];
+        
+        function getStatusColor(status) {
+            switch (status) {
+                case 'available': return '#4caf50';
+                case 'busy': return '#ff9800';
+                case 'offline': return '#f44336';
+                default: return '#9e9e9e';
+            }
+        }
+        
+        function updateStatus(message, type = 'info') {
+            statusDiv.textContent = message;
+            statusDiv.className = `status ${type}`;
+        }
+        
+        function initializeMap() {
+            try {
+                updateStatus('MAPPLS SDK loaded successfully! Initializing map...', 'success');
+                
+                // Center map on Indore
+                const map = new mappls.Map('map', {
+                    center: [22.7196, 75.8577], // Indore center
+                    zoom: 12
+                });
+                
+                map.addListener('load', function() {
+                    updateStatus('Map loaded! Showing 5 workers in Indore city', 'success');
+                    
+                    // Add worker markers
+                    workers.forEach(worker => {
+                        try {
+                            const marker = new mappls.Marker({
+                                map: map,
+                                position: [worker.location.lat, worker.location.lng],
+                                title: worker.name,
+                                icon: {
+                                    url: `data:image/svg+xml;base64,${btoa(`
+                                        <svg width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
+                                            <circle cx="15" cy="15" r="12" fill="${getStatusColor(worker.status)}" stroke="#fff" stroke-width="3"/>
+                                            <circle cx="15" cy="15" r="6" fill="#fff"/>
+                                            <text x="15" y="19" text-anchor="middle" fill="${getStatusColor(worker.status)}" font-size="10" font-weight="bold">W</text>
+                                        </svg>
+                                    `)}`,
+                                    size: [30, 30],
+                                    anchor: [15, 15]
+                                }
+                            });
+                            
+                            // Add click event for worker info
+                            marker.addListener('click', function() {
+                                const infoWindow = new mappls.InfoWindow({
+                                    content: `
+                                        <div style="padding: 10px; min-width: 200px;">
+                                            <h3 style="margin: 0 0 8px 0; color: #333;">${worker.name}</h3>
+                                            <p style="margin: 4px 0; color: #666;">ID: ${worker.employeeId}</p>
+                                            <span style="
+                                                background: ${getStatusColor(worker.status)};
+                                                color: white;
+                                                padding: 2px 8px;
+                                                border-radius: 12px;
+                                                font-size: 12px;
+                                                text-transform: capitalize;
+                                            ">${worker.status}</span>
+                                            <p style="margin: 8px 0 4px 0; color: #333;">Area: ${worker.area}</p>
+                                            <p style="margin: 4px 0; color: #666; font-size: 12px;">
+                                                Location: ${worker.location.lat.toFixed(4)}, ${worker.location.lng.toFixed(4)}
+                                            </p>
+                                        </div>
+                                    `,
+                                    position: [worker.location.lat, worker.location.lng]
+                                });
+                                infoWindow.open();
+                            });
+                            
+                        } catch (error) {
+                            console.error('Error adding worker marker:', error);
+                        }
+                    });
+                    
+                    // Fit map to show all workers
+                    try {
+                        const bounds = new mappls.LatLngBounds();
+                        workers.forEach(worker => {
+                            bounds.extend([worker.location.lat, worker.location.lng]);
+                        });
+                        map.fitBounds(bounds, { padding: 50 });
+                    } catch (error) {
+                        console.error('Error fitting bounds:', error);
+                    }
+                });
+                
+            } catch (error) {
+                updateStatus('Error initializing map: ' + error.message, 'error');
+                console.error('Map initialization error:', error);
+            }
+        }
+        
+        // Load MAPPLS SDK
+        const script = document.createElement('script');
+        script.src = `https://apis.mappls.com/advancedmaps/api/${API_KEY}/map_sdk?layer=vector&v=3.0&callback=initializeMap`;
+        script.onerror = function() {
+            updateStatus('Failed to load MAPPLS SDK. Check API key and network connection.', 'error');
+        };
+        
+        document.head.appendChild(script);
+    </script>
+</body>
+</html>

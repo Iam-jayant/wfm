@@ -1,0 +1,40 @@
+{
+  "name": "@workforce-navigator/frontend",
+  "version": "1.0.0",
+  "description": "React frontend for WorkForce Navigator",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "type-check": "tsc --noEmit",
+    "test": "vitest --run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.14.0",
+    "@mui/material": "^5.14.0",
+    "@workforce-navigator/shared": "^1.0.0",
+    "axios": "^1.4.0",
+    "ethers": "^6.7.0",
+    "mappls-web-maps": "^3.7.1-0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.14.0",
+    "socket.io-client": "^4.7.0"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^14.4.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@vitejs/plugin-react": "^4.0.0",
+    "jsdom": "^22.1.0",
+    "typescript": "^5.1.0",
+    "vite": "^4.4.0",
+    "vitest": "^0.34.0"
+  }
+}

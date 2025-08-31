@@ -1,0 +1,10 @@
+location,city,date,months_ahead,predicted_demand
+LOC_001,New Delhi,2025-01-31,1,37
+LOC_001,New Delhi,2025-04-01,3,41
+LOC_001,New Delhi,2025-06-30,6,32
+LOC_002,Mumbai,2025-01-31,1,66
+LOC_002,Mumbai,2025-04-01,3,61
+LOC_002,Mumbai,2025-06-30,6,42
+LOC_005,Bangalore,2025-01-31,1,34
+LOC_005,Bangalore,2025-04-01,3,35
+LOC_005,Bangalore,2025-06-30,6,26
